@@ -27,6 +27,27 @@ class LogController extends Controller
             abort(404, 'Log entry not found.');
         }
 
+        // Ensure all required properties exist with default values
+        $log->message = $log->message ?? '';
+        $log->level = $log->level ?? 'info';
+        $log->status = $log->status ?? 'open';
+        $log->file_path = $log->file_path ?? null;
+        $log->line_number = $log->line_number ?? null;
+        $log->exception_class = $log->exception_class ?? null;
+        $log->stack_trace = $log->stack_trace ?? null;
+        $log->request_url = $log->request_url ?? null;
+        $log->request_method = $log->request_method ?? null;
+        $log->user_agent = $log->user_agent ?? null;
+        $log->user_id = $log->user_id ?? null;
+        $log->created_at = $log->created_at ?? now();
+        $log->updated_at = $log->updated_at ?? $log->created_at;
+        
+        // Decode JSON fields
+        if (isset($log->context) && $log->context) {
+            $log->context = json_decode($log->context, true);
+        } else {
+            $log->context = null;
+        }
         return view('devlogger-dashboard::logs.show', compact('log'));
     }
 

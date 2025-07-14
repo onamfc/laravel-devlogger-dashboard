@@ -292,7 +292,7 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm text-gray-900 dark:text-white font-medium">
-                                    {{ Str::limit($log->message, 60) }}
+                                    {{ Str::limit($log->message ?? '', 60) }}
                                 </div>
                                 @if($log->exception_class)
                                     <div class="text-sm text-gray-500 dark:text-gray-400">

@@ -39,9 +39,26 @@ class LogDetails extends Component
             abort(404, 'Log entry not found.');
         }
 
+        // Ensure all required properties exist with default values
+        $this->log->message = $this->log->message ?? '';
+        $this->log->level = $this->log->level ?? 'info';
+        $this->log->status = $this->log->status ?? 'open';
+        $this->log->file_path = $this->log->file_path ?? null;
+        $this->log->line_number = $this->log->line_number ?? null;
+        $this->log->exception_class = $this->log->exception_class ?? null;
+        $this->log->stack_trace = $this->log->stack_trace ?? null;
+        $this->log->request_url = $this->log->request_url ?? null;
+        $this->log->request_method = $this->log->request_method ?? null;
+        $this->log->user_agent = $this->log->user_agent ?? null;
+        $this->log->user_id = $this->log->user_id ?? null;
+        $this->log->created_at = $this->log->created_at ?? now();
+        $this->log->updated_at = $this->log->updated_at ?? $this->log->created_at;
+
         // Decode JSON fields
         if ($this->log->context) {
             $this->log->context = json_decode($this->log->context, true);
+        } else {
+            $this->log->context = null;
         }
     }
 

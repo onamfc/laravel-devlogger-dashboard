@@ -148,8 +148,25 @@ class LogDashboard extends Component
             $query->where('created_at', '<=', Carbon::parse($this->dateTo)->endOfDay());
         }
 
-        return $query->orderBy($this->sortField, $this->sortDirection)
-                    ->paginate($this->perPage);
+        $results = $query->orderBy($this->sortField, $this->sortDirection)
+                        ->paginate($this->perPage);
+        
+        // Ensure all required properties exist on each log object
+        $results->getCollection()->transform(function ($log) {
+            // Set default values for potentially missing properties
+            $log->message = $log->message ?? '';
+            $log->level = $log->level ?? 'info';
+            $log->status = $log->status ?? 'open';
+            $log->file_path = $log->file_path ?? null;
+            $log->line_number = $log->line_number ?? null;
+            $log->exception_class = $log->exception_class ?? null;
+            $log->created_at = $log->created_at ?? now();
+            $log->updated_at = $log->updated_at ?? $log->created_at;
+            
+            return $log;
+        });
+        
+        return $results;
     }
 
     public function getStatsProperty()

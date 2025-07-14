@@ -78,7 +78,7 @@
         </div>
         
         <div class="px-6 py-4">
-            <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ $log->message }}</h1>
+            <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ $log->message ?? 'No message' }}</h1>
             <div class="text-sm text-gray-500 dark:text-gray-400">
                 {{ \Carbon\Carbon::parse($log->created_at)->format('F j, Y \a\t g:i A') }}
                 @if($log->updated_at && $log->updated_at !== $log->created_at)
