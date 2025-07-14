@@ -21,14 +21,17 @@ class LogController extends Controller
 
     public function show($id)
     {
-        $log = DB::table('developer_logs')->where('id', $id)->first();
+        $log = DB::table('developer_logs')
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->first();
         
         if (!$log) {
             abort(404, 'Log entry not found.');
         }
 
         // Ensure all required properties exist with default values
-        $log->message = $log->message ?? '';
+        $log->message = $log->log ?? '';
         $log->level = $log->level ?? 'info';
         $log->status = $log->status ?? 'open';
         $log->file_path = $log->file_path ?? null;
@@ -39,6 +42,9 @@ class LogController extends Controller
         $log->request_method = $log->request_method ?? null;
         $log->user_agent = $log->user_agent ?? null;
         $log->user_id = $log->user_id ?? null;
+        $log->ip_address = $log->ip_address ?? null;
+        $log->queue = $log->queue ?? null;
+        $log->tags = $log->tags ?? null;
         $log->created_at = $log->created_at ?? now();
         $log->updated_at = $log->updated_at ?? $log->created_at;
         
@@ -48,12 +54,23 @@ class LogController extends Controller
         } else {
             $log->context = null;
         }
+        
+        if (isset($log->tags) && $log->tags) {
+            $log->tags = json_decode($log->tags, true);
+        } else {
+            $log->tags = null;
+        }
+        
         return view('devlogger-dashboard::logs.show', compact('log'));
     }
 
     public function destroy($id)
     {
-        $deleted = DB::table('developer_logs')->where('id', $id)->delete();
+        // Use soft delete instead of hard delete
+        $deleted = DB::table('developer_logs')
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->update(['deleted_at' => now()]);
         
         if ($deleted) {
             return response()->json(['success' => true, 'message' => 'Log deleted successfully.']);
@@ -71,20 +88,20 @@ class LogController extends Controller
         ]);
 
         $count = 0;
+        $baseQuery = DB::table('developer_logs')
+            ->whereIn('id', $request->ids)
+            ->whereNull('deleted_at');
 
         switch ($request->action) {
             case 'delete':
-                $count = DB::table('developer_logs')->whereIn('id', $request->ids)->delete();
+                // Use soft delete
+                $count = $baseQuery->update(['deleted_at' => now()]);
                 break;
             case 'mark_resolved':
-                $count = DB::table('developer_logs')
-                    ->whereIn('id', $request->ids)
-                    ->update(['status' => 'resolved', 'updated_at' => now()]);
+                $count = $baseQuery->update(['status' => 'resolved', 'updated_at' => now()]);
                 break;
             case 'mark_open':
-                $count = DB::table('developer_logs')
-                    ->whereIn('id', $request->ids)
-                    ->update(['status' => 'open', 'updated_at' => now()]);
+                $count = $baseQuery->update(['status' => 'open', 'updated_at' => now()]);
                 break;
         }
 
@@ -97,7 +114,10 @@ class LogController extends Controller
 
     public function openFile($id)
     {
-        $log = DB::table('developer_logs')->where('id', $id)->first();
+        $log = DB::table('developer_logs')
+            ->where('id', $id)
+            ->whereNull('deleted_at')
+            ->first();
         
         if (!$log || !$log->file_path) {
             return response()->json(['success' => false, 'message' => 'File path not found.']);

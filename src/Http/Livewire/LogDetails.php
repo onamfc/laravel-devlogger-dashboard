@@ -33,14 +33,17 @@ class LogDetails extends Component
 
     public function loadLog()
     {
-        $this->log = DB::table('developer_logs')->where('id', $this->logId)->first();
+        $this->log = DB::table('developer_logs')
+            ->where('id', $this->logId)
+            ->whereNull('deleted_at')
+            ->first();
         
         if (!$this->log) {
             abort(404, 'Log entry not found.');
         }
 
         // Ensure all required properties exist with default values
-        $this->log->message = $this->log->message ?? '';
+        $this->log->message = $this->log->log ?? '';
         $this->log->level = $this->log->level ?? 'info';
         $this->log->status = $this->log->status ?? 'open';
         $this->log->file_path = $this->log->file_path ?? null;
@@ -51,6 +54,9 @@ class LogDetails extends Component
         $this->log->request_method = $this->log->request_method ?? null;
         $this->log->user_agent = $this->log->user_agent ?? null;
         $this->log->user_id = $this->log->user_id ?? null;
+        $this->log->ip_address = $this->log->ip_address ?? null;
+        $this->log->queue = $this->log->queue ?? null;
+        $this->log->tags = $this->log->tags ?? null;
         $this->log->created_at = $this->log->created_at ?? now();
         $this->log->updated_at = $this->log->updated_at ?? $this->log->created_at;
 
@@ -59,6 +65,12 @@ class LogDetails extends Component
             $this->log->context = json_decode($this->log->context, true);
         } else {
             $this->log->context = null;
+        }
+        
+        if ($this->log->tags) {
+            $this->log->tags = json_decode($this->log->tags, true);
+        } else {
+            $this->log->tags = null;
         }
     }
 

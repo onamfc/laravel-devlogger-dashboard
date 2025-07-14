@@ -78,7 +78,7 @@
         </div>
         
         <div class="px-6 py-4">
-            <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ $log->message ?? 'No message' }}</h1>
+            <h1 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{{ $log->log ?? $log->message ?? 'No message' }}</h1>
             <div class="text-sm text-gray-500 dark:text-gray-400">
                 {{ \Carbon\Carbon::parse($log->created_at)->format('F j, Y \a\t g:i A') }}
                 @if($log->updated_at && $log->updated_at !== $log->created_at)
@@ -143,6 +143,23 @@
         </div>
     @endif
 
+    <!-- Queue Information -->
+    @if($log->queue)
+        <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-white">Queue Information</h2>
+            </div>
+            <div class="px-6 py-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Queue</label>
+                    <div class="text-sm font-mono text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 px-3 py-2 rounded">
+                        {{ $log->queue }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <!-- Exception Details -->
     @if($log->exception_class)
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
@@ -179,7 +196,7 @@
     @endif
 
     <!-- Request Information -->
-    @if($log->request_url || $log->request_method || $log->user_agent)
+    @if($log->request_url || $log->request_method || $log->user_agent || $log->ip_address)
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-white">Request Information</h2>
@@ -190,6 +207,15 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Request</label>
                         <div class="text-sm font-mono text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 px-3 py-2 rounded">
                             <span class="font-bold">{{ $log->request_method }}</span> {{ $log->request_url }}
+                        </div>
+                    </div>
+                @endif
+
+                @if($log->ip_address)
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">IP Address</label>
+                        <div class="text-sm font-mono text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-900 px-3 py-2 rounded">
+                            {{ $log->ip_address }}
                         </div>
                     </div>
                 @endif
@@ -211,6 +237,24 @@
                         </div>
                     </div>
                 @endif
+            </div>
+        </div>
+    @endif
+
+    <!-- Tags -->
+    @if($log->tags)
+        <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-white">Tags</h2>
+            </div>
+            <div class="px-6 py-4">
+                <div class="flex flex-wrap gap-2">
+                    @foreach($log->tags as $tag)
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            {{ $tag }}
+                        </span>
+                    @endforeach
+                </div>
             </div>
         </div>
     @endif

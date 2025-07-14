@@ -122,7 +122,7 @@ class LogDashboard extends Component
         // Apply search filter
         if ($this->search) {
             $query->where(function ($q) {
-                $q->where('message', 'like', '%' . $this->search . '%')
+                $q->where('log', 'like', '%' . $this->search . '%')
                   ->orWhere('exception_class', 'like', '%' . $this->search . '%')
                   ->orWhere('file_path', 'like', '%' . $this->search . '%')
                   ->orWhere('request_url', 'like', '%' . $this->search . '%');
@@ -148,13 +148,16 @@ class LogDashboard extends Component
             $query->where('created_at', '<=', Carbon::parse($this->dateTo)->endOfDay());
         }
 
+        // Exclude soft deleted records
+        $query->whereNull('deleted_at');
+
         $results = $query->orderBy($this->sortField, $this->sortDirection)
                         ->paginate($this->perPage);
         
         // Ensure all required properties exist on each log object
         $results->getCollection()->transform(function ($log) {
             // Set default values for potentially missing properties
-            $log->message = $log->message ?? '';
+            $log->message = $log->log ?? '';
             $log->level = $log->level ?? 'info';
             $log->status = $log->status ?? 'open';
             $log->file_path = $log->file_path ?? null;
@@ -171,7 +174,7 @@ class LogDashboard extends Component
 
     public function getStatsProperty()
     {
-        $baseQuery = DB::table('developer_logs');
+        $baseQuery = DB::table('developer_logs')->whereNull('deleted_at');
         
         return [
             'total' => $baseQuery->count(),
