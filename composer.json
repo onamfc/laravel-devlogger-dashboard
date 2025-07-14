@@ -1,0 +1,49 @@
+{
+  "name": "onamfc/laravel-devlogger-dashboard",
+  "description": "A beautiful dashboard for managing Laravel DevLogger records with IDE integration",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "logging",
+    "dashboard",
+    "devlogger",
+    "debugging",
+    "livewire"
+  ],
+  "authors": [
+    {
+      "name": "Brandon Estrella",
+      "email": "brandonestrelladev@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.1",
+    "laravel/framework": "^10.0|^11.0|^12.0",
+    "livewire/livewire": "^3.0",
+    "onamfc/laravel-devlogger": "*"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^8.0|^9.0|^10.0",
+    "phpunit/phpunit": "^10.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Onamfc\\DevLoggerDashboard\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Onamfc\\DevLoggerDashboard\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Onamfc\\DevLoggerDashboard\\DevLoggerDashboardServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
