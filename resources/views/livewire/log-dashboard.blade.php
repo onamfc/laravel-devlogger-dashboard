@@ -330,7 +330,7 @@
                                 {{ \Carbon\Carbon::parse($log->created_at)->format('M j, Y H:i') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="{{ route('devlogger.logs.show', $log->id) }}" 
+                                <a href="{{ route('devlogger.db-logs.show', $log->id) }}"
                                    class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors duration-200">
                                     View
                                 </a>

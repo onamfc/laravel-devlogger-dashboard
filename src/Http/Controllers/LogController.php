@@ -61,7 +61,7 @@ class LogController extends Controller
             $log->tags = null;
         }
         
-        return view('devlogger-dashboard::logs.show', compact('log'));
+        return view('devlogger-dashboard::db-logs.show', compact('log'));
     }
 
     public function destroy($id)

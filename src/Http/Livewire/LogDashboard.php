@@ -86,7 +86,7 @@ class LogDashboard extends Component
     public function bulkDelete()
     {
         if (empty($this->selectedLogs)) {
-            $this->addError('bulk', 'No logs selected.');
+            $this->addError('bulk', 'No db-logs selected.');
             return;
         }
 
@@ -101,7 +101,7 @@ class LogDashboard extends Component
     public function bulkMarkResolved()
     {
         if (empty($this->selectedLogs)) {
-            $this->addError('bulk', 'No logs selected.');
+            $this->addError('bulk', 'No db-logs selected.');
             return;
         }
 
@@ -189,7 +189,7 @@ class LogDashboard extends Component
     public function render()
     {
         return view('devlogger-dashboard::livewire.log-dashboard', [
-            'logs' => $this->logs,
+            'db-logs' => $this->logs,
             'stats' => $this->stats,
         ]);
     }
