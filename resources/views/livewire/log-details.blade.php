@@ -49,29 +49,38 @@
                 <div class="flex items-center space-x-3">
                     @if($log->status === 'open')
                         <button wire:click="markResolved" 
+                                wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed"
                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            Mark Resolved
+                            <span wire:loading.remove wire:target="markResolved">Mark Resolved</span>
+                            <span wire:loading wire:target="markResolved">Processing...</span>
                         </button>
                     @else
                         <button wire:click="markOpen" 
+                                wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50 cursor-not-allowed"
                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Reopen
+                            <span wire:loading.remove wire:target="markOpen">Reopen</span>
+                            <span wire:loading wire:target="markOpen">Processing...</span>
                         </button>
                     @endif
                     
                     <button wire:click="deleteLog" 
                             wire:confirm="Are you sure you want to delete this log?"
+                            wire:loading.attr="disabled"
+                            wire:loading.class="opacity-50 cursor-not-allowed"
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
-                        Delete
+                        <span wire:loading.remove wire:target="deleteLog">Delete</span>
+                        <span wire:loading wire:target="deleteLog">Deleting...</span>
                     </button>
                 </div>
             </div>
@@ -106,18 +115,24 @@
                     </div>
                     <div class="flex items-center space-x-2 ml-4">
                         <button wire:click="copyFilePath" 
+                                wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50"
                                 class="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                             </svg>
-                            Copy
+                            <span wire:loading.remove wire:target="copyFilePath">Copy</span>
+                            <span wire:loading wire:target="copyFilePath">...</span>
                         </button>
                         <button wire:click="openInIde" 
+                                wire:loading.attr="disabled"
+                                wire:loading.class="opacity-50"
                                 class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                             </svg>
-                            Open in IDE
+                            <span wire:loading.remove wire:target="openInIde">Open in IDE</span>
+                            <span wire:loading wire:target="openInIde">...</span>
                         </button>
                     </div>
                 </div>

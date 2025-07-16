@@ -35,9 +35,11 @@ class DevLoggerDashboardServiceProvider extends ServiceProvider
             __DIR__.'/../public' => public_path('vendor/devlogger-dashboard'),
         ], 'devlogger-dashboard-assets');
 
-        // Register Livewire components
-        Livewire::component('devlogger-dashboard', LogDashboard::class);
-        Livewire::component('devlogger-log-details', LogDetails::class);
+        // Register Livewire components - ensure they're registered correctly
+        if (class_exists(\Livewire\Livewire::class)) {
+            Livewire::component('devlogger-dashboard', LogDashboard::class);
+            Livewire::component('devlogger-log-details', LogDetails::class);
+        }
 
         // Register middleware
         $this->app['router']->aliasMiddleware('devlogger.dashboard', DevLoggerDashboardMiddleware::class);

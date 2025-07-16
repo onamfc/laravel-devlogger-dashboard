@@ -164,17 +164,26 @@
                         <div class="flex items-center space-x-2">
                             <span class="text-sm text-gray-500 dark:text-gray-400">{{ count($selectedLogs) }} selected</span>
                             <button wire:click="bulkMarkOpen" 
+                                    wire:loading.attr="disabled"
+                                    wire:loading.class="opacity-50 cursor-not-allowed"
                                     class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors duration-200">
-                                Mark Open
+                                <span wire:loading.remove wire:target="bulkMarkOpen">Mark Open</span>
+                                <span wire:loading wire:target="bulkMarkOpen">Processing...</span>
                             </button>
                             <button wire:click="bulkMarkResolved" 
+                                    wire:loading.attr="disabled"
+                                    wire:loading.class="opacity-50 cursor-not-allowed"
                                     class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200">
-                                Mark Resolved
+                                <span wire:loading.remove wire:target="bulkMarkResolved">Mark Resolved</span>
+                                <span wire:loading wire:target="bulkMarkResolved">Processing...</span>
                             </button>
                             <button wire:click="bulkDelete" 
                                     wire:confirm="Are you sure you want to delete the selected logs?"
+                                    wire:loading.attr="disabled"
+                                    wire:loading.class="opacity-50 cursor-not-allowed"
                                     class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200">
-                                Delete
+                                <span wire:loading.remove wire:target="bulkDelete">Delete</span>
+                                <span wire:loading wire:target="bulkDelete">Deleting...</span>
                             </button>
                         </div>
                     @endif
@@ -351,20 +360,29 @@
                                 <div class="flex items-center space-x-2 mt-1">
                                     @if($log->status === 'open')
                                         <button wire:click="markLogResolved({{ $log->id }})" 
+                                                wire:loading.attr="disabled"
+                                                wire:loading.class="opacity-50"
                                                 class="text-xs text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors duration-200">
-                                            Resolve
+                                            <span wire:loading.remove wire:target="markLogResolved({{ $log->id }})">Resolve</span>
+                                            <span wire:loading wire:target="markLogResolved({{ $log->id }})">...</span>
                                         </button>
                                     @else
                                         <button wire:click="markLogOpen({{ $log->id }})" 
+                                                wire:loading.attr="disabled"
+                                                wire:loading.class="opacity-50"
                                                 class="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 transition-colors duration-200">
-                                            Reopen
+                                            <span wire:loading.remove wire:target="markLogOpen({{ $log->id }})">Reopen</span>
+                                            <span wire:loading wire:target="markLogOpen({{ $log->id }})">...</span>
                                         </button>
                                     @endif
                                     
                                     <button wire:click="deleteLog({{ $log->id }})" 
                                             wire:confirm="Are you sure you want to delete this log?"
+                                            wire:loading.attr="disabled"
+                                            wire:loading.class="opacity-50"
                                             class="text-xs text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200">
-                                        Delete
+                                        <span wire:loading.remove wire:target="deleteLog({{ $log->id }})">Delete</span>
+                                        <span wire:loading wire:target="deleteLog({{ $log->id }})">...</span>
                                     </button>
                                 </div>
                             </td>

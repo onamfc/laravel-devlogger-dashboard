@@ -163,6 +163,15 @@
     @livewireScripts
     
     <script>
+        // Ensure Livewire is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof Livewire === 'undefined') {
+                console.error('Livewire is not loaded! Make sure @livewireScripts is included.');
+            } else {
+                console.log('Livewire loaded successfully');
+            }
+        });
+        
         // IDE URL handler
         window.addEventListener('open-ide-url', event => {
             const url = event.detail.url;
