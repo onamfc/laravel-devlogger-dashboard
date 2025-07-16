@@ -189,7 +189,7 @@ class LogDashboard extends Component
     public function render()
     {
         return view('devlogger-dashboard::livewire.log-dashboard', [
-            'db-logs' => $this->logs,
+            'logs' => $this->logs,
             'stats' => $this->stats,
         ]);
     }
