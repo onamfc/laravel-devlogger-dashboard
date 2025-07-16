@@ -58,9 +58,9 @@ class LogDetailsTest extends TestCase
             ->call('deleteLog')
             ->assertRedirect(route('devlogger.dashboard'));
 
-        $this->assertDatabaseMissing('developer_logs', [
-            'id' => 1,
-        ]);
+        // Check soft delete
+        $log = DB::table('developer_logs')->where('id', 1)->first();
+        $this->assertNotNull($log->deleted_at);
     }
 
     /** @test */

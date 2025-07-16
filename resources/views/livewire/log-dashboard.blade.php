@@ -149,11 +149,24 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                         </svg>
                         Filters
+                        @if($showFilters)
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                            </svg>
+                        @else
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7 7"></path>
+                            </svg>
+                        @endif
                     </button>
 
                     @if(count($selectedLogs) > 0)
                         <div class="flex items-center space-x-2">
                             <span class="text-sm text-gray-500 dark:text-gray-400">{{ count($selectedLogs) }} selected</span>
+                            <button wire:click="bulkMarkOpen" 
+                                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors duration-200">
+                                Mark Open
+                            </button>
                             <button wire:click="bulkMarkResolved" 
                                     class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200">
                                 Mark Resolved
@@ -334,6 +347,26 @@
                                    class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors duration-200">
                                     View
                                 </a>
+                                
+                                <div class="flex items-center space-x-2 mt-1">
+                                    @if($log->status === 'open')
+                                        <button wire:click="markLogResolved({{ $log->id }})" 
+                                                class="text-xs text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 transition-colors duration-200">
+                                            Resolve
+                                        </button>
+                                    @else
+                                        <button wire:click="markLogOpen({{ $log->id }})" 
+                                                class="text-xs text-orange-600 dark:text-orange-400 hover:text-orange-900 dark:hover:text-orange-300 transition-colors duration-200">
+                                            Reopen
+                                        </button>
+                                    @endif
+                                    
+                                    <button wire:click="deleteLog({{ $log->id }})" 
+                                            wire:confirm="Are you sure you want to delete this log?"
+                                            class="text-xs text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors duration-200">
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty

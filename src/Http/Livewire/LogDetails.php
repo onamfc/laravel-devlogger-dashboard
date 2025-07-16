@@ -123,25 +123,34 @@ class LogDetails extends Component
     {
         DB::table('developer_logs')
             ->where('id', $this->logId)
+            ->whereNull('deleted_at')
             ->update(['status' => 'resolved', 'updated_at' => now()]);
         
         $this->loadLog();
         session()->flash('success', 'Log marked as resolved.');
+        $this->dispatch('logUpdated');
     }
 
     public function markOpen()
     {
         DB::table('developer_logs')
             ->where('id', $this->logId)
+            ->whereNull('deleted_at')
             ->update(['status' => 'open', 'updated_at' => now()]);
         
         $this->loadLog();
         session()->flash('success', 'Log marked as open.');
+        $this->dispatch('logUpdated');
     }
 
     public function deleteLog()
     {
-        DB::table('developer_logs')->where('id', $this->logId)->delete();
+        DB::table('developer_logs')
+            ->where('id', $this->logId)
+            ->whereNull('deleted_at')
+            ->update(['deleted_at' => now()]);
+        
+        $this->dispatch('logDeleted');
         
         return redirect()->route('devlogger.dashboard')
             ->with('success', 'Log deleted successfully.');
