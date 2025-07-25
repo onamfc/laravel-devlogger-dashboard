@@ -26,25 +26,25 @@ A beautiful, feature-rich dashboard for managing Laravel DevLogger records with 
 1. Install the package via Composer:
 
 ```bash
-composer require onamfc/laravel-devlogger-dashboard
+  composer require onamfc/laravel-devlogger-dashboard
 ```
 
 2. Publish the configuration file:
 
 ```bash
-php artisan vendor:publish --tag=devlogger-dashboard-config
+  php artisan vendor:publish --tag=devlogger-dashboard-config
 ```
 
 3. (Optional) Publish the views for customization:
 
 ```bash
-php artisan vendor:publish --tag=devlogger-dashboard-views
+  php artisan vendor:publish --tag=devlogger-dashboard-views
 ```
 
 4. (Optional) Publish the assets:
 
 ```bash
-php artisan vendor:publish --tag=devlogger-dashboard-assets
+  php artisan vendor:publish --tag=devlogger-dashboard-assets
 ```
 
 ## Configuration
@@ -193,7 +193,7 @@ You can extend or replace this middleware by binding your own implementation.
 Publish the views to customize the UI:
 
 ```bash
-php artisan vendor:publish --tag=devlogger-dashboard-views
+  php artisan vendor:publish --tag=devlogger-dashboard-views
 ```
 
 Views will be published to `resources/views/vendor/devlogger-dashboard/`.
